@@ -15,7 +15,7 @@ export default function ShopPage() {
     const { character, user, isLoading } = useCharacter()
     const { selectedCategory, setSelectedCategory } = useShopStore()
     const { selectedItem, isPurchasing, setSelectedItem, handlePurchase } = useShopLogic(user?.id, character)
-    const itemsWithOwnership = useQuery(api.inventory.getAllItemsWithOwnership, user?.id ? { userId: user.id } : "skip")
+    const itemsWithOwnership = useQuery(api.invetory.getAllItemsWithOwnership, user?.id ? { userId: user.id } : "skip")
 
 
 
@@ -54,7 +54,7 @@ export default function ShopPage() {
                         className="text-5xl font-bold text-amber-300 mb-2 drop-shadow-[0_0_10px_rgba(251,191,36,0.5)]"
                         style={{ fontFamily: "serif" }}
                     >
-                        SHOP 🏪
+                        Store 🏪
                     </h1>
                     <p className="text-amber-100 text-lg">Welcome, brave adventurer! Browse our finest wares.</p>
                 </div>
