@@ -15,7 +15,7 @@ export default function ShopPage() {
     const { character, user, isLoading } = useCharacter()
     const { selectedCategory, setSelectedCategory } = useShopStore()
     const { selectedItem, isPurchasing, setSelectedItem, handlePurchase } = useShopLogic(user?.id, character)
-    const itemsWithOwnership = useQuery(api.invetory.getAllItemsWithOwnership, user?.id ? { userId: user.id } : "skip")
+    const itemsWithOwnership = useQuery(api.inventory.getAllItemsWithOwnership, user?.id ? { userId: user.id } : "skip")
 
 
 

@@ -1,74 +1,30 @@
-import { currentUser } from "@clerk/nextjs/server";
-import { ConvexHttpClient } from "convex/browser";
-import { api } from "../../../convex/_generated/api";
 import Link from "next/link";
-import { Locate, Sparkles } from "lucide-react";
-import { SignedIn } from "@clerk/nextjs";
-import HeaderProfileBtn from "./HeaderProfileBtn";
+import { UserButton } from "@clerk/nextjs";
+import { BtnStast } from "@/app/(root)/components/BtnStast";
+import { CharacterPreview } from "./AvatarPreview/CharacterPreview";
+import { ProfilePreview } from "./AvatarPreview/ProfilePreview";
+import { useClerk } from "@clerk/nextjs";
+import ProfileDropdown from "./HeaderProfileBtn";
 
-async function Header() {
-  const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
-  const user = await currentUser();
+function Header({ stast }: { stast: { name: number, icon: string, color: string }[] }) {
 
-  const convexUser = await convex.query(api.users.getUser, {
-    userId: user?.id || "",
-  });
+  const { openUserProfile, signOut } = useClerk();
 
   return (
-    <div className="relative z-10">
-      <div
-        className="flex items-center lg:justify-between justify-center 
-        bg-[#0a0a0f]/80 backdrop-blur-xl p-6 mb-4 rounded-lg"
-      >
-        <div className="hidden lg:flex items-center gap-8">
+    <div className="relative z-10 flex items-center justify-between px-6 py-4">
+      {/* Logo */}
 
+      <ProfileDropdown />
+      {/* Stats */}
+      <div className="flex items-center gap-3">
+        {/* Money */}
 
-          {/* Navigation */}
-          <nav className="flex items-center space-x-1">
-            <Link
-              href="/tracks"
-              className="relative group flex items-center gap-2 px-4 py-1.5 rounded-lg text-gray-300 bg-gray-800/50 
-                hover:bg-blue-500/10 border border-gray-800 hover:border-blue-500/50 transition-all duration-300 shadow-lg overflow-hidden"
-            >
-              <div
-                className="absolute inset-0 bg-gradient-to-r from-blue-500/10 
-                to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity"
-              />
-              <Locate className="w-4 h-4 relative z-10 group-hover:rotate-3 transition-transform" />
-              <span
-                className="text-sm font-medium relative z-10 group-hover:text-white
-                 transition-colors"
-              >
-                Tracks
-              </span>
-            </Link>
+        {stast.map((stat, index) => (
+          <BtnStast key={index} icon={stat.icon} stats={stat.name} className={stat.color} />
+        ))}
 
-          </nav>
-        </div>
+        {/* User Avatar */}
 
-        <div className="flex items-center gap-4">
-
-
-          {!convexUser?.isPro && (
-            <Link
-              href="/pricing"
-              className="flex items-center gap-2 px-4 py-1.5 rounded-lg border border-amber-500/20 hover:border-amber-500/40 bg-gradient-to-r from-amber-500/10 
-                to-orange-500/10 hover:from-amber-500/20 hover:to-orange-500/20 
-                transition-all duration-300"
-            >
-              <Sparkles className="w-4 h-4 text-amber-400 hover:text-amber-300" />
-              <span className="text-sm font-medium text-amber-400/90 hover:text-amber-300">
-                Pro
-              </span>
-            </Link>
-          )}
-
-
-
-          <div className="pl-3 border-l border-gray-800">
-            <HeaderProfileBtn />
-          </div>
-        </div>
       </div>
     </div>
   );

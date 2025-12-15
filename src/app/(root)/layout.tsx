@@ -1,12 +1,13 @@
 "use client"
 import { UserButton, useUser } from "@clerk/nextjs";
-import { Menu } from "../../shared/components/dashboard/Menu";
-import { BtnStast } from "../../shared/components/dashboard/BtnStast";
+import { Menu } from "./components/Menu";
+import { BtnStast } from "./components/BtnStast";
 import Image from "next/image";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Header from "@/shared/components/Header";
 
 export default function RootLayout({
   children,
@@ -38,31 +39,12 @@ export default function RootLayout({
     <div
       className="min-h-screen relative overflow-hidden"
       style={{
-        backgroundImage: `${`url('https://res.cloudinary.com/dq0pfesxe/image/upload/v1764609296/Log_Horizon_-_Luminara_o3xxhc.jpg')`}`,
+        backgroundImage: `${`url('https://res.cloudinary.com/dq0pfesxe/image/upload/v1765809751/game_background_3_dyvuvk.png')`}`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
     >
-      <div className="relative z-10 flex items-center justify-between px-6 py-4">
-        {/* Logo */}
-        <Link href="/dashboard" className="flex items-center space-x-3">
-          <Image src={'/Logo.png'} alt="logo" width={140} height={140} />
-        </Link>
-
-        {/* Stats */}
-        <div className="flex items-center gap-3">
-          {/* Money */}
-
-          {stast.map((stat, index) => (
-            <BtnStast key={index} icon={stat.icon} stats={stat.name} className={stat.color} />
-          ))}
-
-          {/* User Avatar */}
-          <div className="w-10 h-10 flex items-center justify-center rounded-full overflow-hidden border-3 border-gray-900 bg-gray-700">
-            <UserButton afterSignOutUrl="/" />
-          </div>
-        </div>
-      </div>
+      <Header stast={stast} />
       {children}
       <Menu
         options={[
