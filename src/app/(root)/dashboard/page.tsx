@@ -15,14 +15,7 @@ export default function Dashboard() {
     return null
   }
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[url('/images/figma2.png')] bg-cover bg-center">
-        <p className="text-white text-xl font-bold">Loading Dashboard...</p>
-      </div>
-    )
-  }
-
+ 
   return (
     <div>
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20" />

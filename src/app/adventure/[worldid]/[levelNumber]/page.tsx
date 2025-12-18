@@ -71,20 +71,16 @@ export default function BattlePage() {
     if (!levelData) {
         return (
             <BattleLoadingScreen
-                type="level"
-                worldId={worldId}
-                levelNumber={levelNumber}
-                allWorlds={allWorlds?.map((w) => w.worldId)}
             />
         )
     }
 
     if (!quizzes || quizzes.length === 0) {
-        return <BattleLoadingScreen type="quizzes" worldId={worldId} levelNumber={levelNumber} />
+        return <BattleLoadingScreen/>
     }
 
     if (!enemy) {
-        return <BattleLoadingScreen type="enemy" enemyId={levelData.enemyId} />
+        return <BattleLoadingScreen  />
     }
 
     const hairItem = items.find((item) => item._id === character.hairItemId)
@@ -180,7 +176,7 @@ export default function BattlePage() {
                             question={currentQuiz.question}
                             explanation={currentQuiz.explanation}
                         >
-                            <div className="h-[230px]">
+                            <div className="h-[250px] w-full flex items-center justify-center">
 
                                 <QuizRenderer quiz={currentQuiz} onAnswer={handleAnswer} onMatchingSubmit={handleMatchingSubmit} />
                             </div>

@@ -1,5 +1,6 @@
 'use client'; // ← Necesario si estás en App Router y usas eventos como hover
 
+import { SoundButtonWrapper } from '@/shared/components/Effects/SoundButtonWrraperProps';
 import { InventoryModal } from '@/shared/components/inventory/InventoryModal';
 import { ShopModal } from '@/shared/components/shop/ShopModal';
 import { Package } from 'lucide-react';
@@ -30,7 +31,9 @@ export const Menu = () => {
       <div className="fixed md:bottom-8 bottom-0 left-1/2 -translate-x-1/2 z-20 pointer-events-none md:bg-transparent w-full bg-black flex items-center p-1 justify-center  ">
         <div className="flex gap-6 pointer-events-auto">
           {options.map((item, index) => (
-            <Link href={item.url} key={index} passHref legacyBehavior>
+            <SoundButtonWrapper key={index}>
+
+            <Link href={item.url}  passHref legacyBehavior>
               <a className="block">
                 <button
                   aria-label={item.name}
@@ -71,7 +74,11 @@ export const Menu = () => {
                 </button>
               </a>
             </Link>
+            </SoundButtonWrapper>
+
           ))}
+          <SoundButtonWrapper>
+
           <button
             onClick={() => setIsInventoryOpen(true)}
             className="relative group 
@@ -99,6 +106,9 @@ export const Menu = () => {
                transition-all duration-300"
             />
           </button>
+          </SoundButtonWrapper>
+          <SoundButtonWrapper>
+
           <button
             onClick={() => setIsShopOpen(true)}
             className="relative group 
@@ -126,6 +136,8 @@ export const Menu = () => {
                transition-all duration-300"
             />
           </button>
+          </SoundButtonWrapper>
+
         </div>
       </div>
       <InventoryModal isOpen={isInventoryOpen} onClose={() => setIsInventoryOpen(false)} />

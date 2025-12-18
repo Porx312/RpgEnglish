@@ -33,13 +33,6 @@ export function ShopModal({ isOpen, onClose }: ShopModalProps) {
     }
   }, [isOpen])
 
-  if (!user || isLoading) {
-    return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
-        <div className="text-amber-300 text-xl font-bold animate-pulse">Loading shop...</div>
-      </div>
-    )
-  }
 
   if (!character) {
     return null

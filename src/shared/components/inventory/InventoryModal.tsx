@@ -30,14 +30,6 @@ export function InventoryModal({ isOpen, onClose }: InventoryModalProps) {
     )
   }
 
-  if (isLoading) {
-    return (
-      <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
-        <div className="text-amber-300 text-xl font-bold animate-pulse">Loading inventory...</div>
-      </div>
-    )
-  }
-
   if (!character) {
     return null
   }
