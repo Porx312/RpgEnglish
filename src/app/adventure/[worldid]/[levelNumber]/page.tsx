@@ -1,7 +1,6 @@
 "use client"
 
 import { CharacterPreview } from "@/shared/components/AvatarPreview/CharacterPreview"
-import { BattleHeader } from "@/shared/components/battle/BattleHeader"
 import { BattleProgress } from "@/shared/components/battle/BattleProgress"
 import { BattleResultScreen } from "@/shared/components/battle/BattleResultScreen"
 import { CharacterBattleCard } from "@/shared/components/battle/CharacterBattleCard"
@@ -13,8 +12,10 @@ import { useUser } from "@clerk/nextjs"
 import { useQuery } from "convex/react"
 import { useRouter, useParams } from "next/navigation"
 import { useEffect } from "react"
-import { api } from "../../../../../../convex/_generated/api"
 import { useBattleLogic } from "@/shared/hooks/use-battle-logic"
+import { api } from "../../../../../convex/_generated/api"
+import { BattleHeader } from "@/shared/components/battle/BattleHeader"
+import SvgMapBack from "@/shared/lib/svgAssets/SvgMapBack"
 
 export default function BattlePage() {
     const { user } = useUser()
@@ -113,43 +114,43 @@ export default function BattlePage() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-[#2d1f15] to-[#1a110d] flex items-center justify-center">
-            <div className="bg-[#4a3728] w-full min-h-screen rounded-lg border-4 border-[#6b4423] shadow-2xl flex items-center justify-between flex-col">
-                {/* Header */}
-                <BattleHeader worldId={worldId} levelNumber={levelNumber} message={message} />
+        <div className="min-h-screen flex flex-col"
+        >
+            {/* Header with Level Banner */}
+            <div className="absolute inset-0 ">
+                <div className="w-full h-full bg-[length:2000px_auto] bg-center bg-no-repeat"
+                    style={{
+                        backgroundImage: "url('https://res.cloudinary.com/dq0pfesxe/image/upload/v1765809751/game_background_3_dyvuvk.png')"
+                    }}
+                />
 
-                {/* Battle Grid */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 mb-4 w-full">
-                    {/* Player Card */}
-                    <CharacterBattleCard name={character.name} hp={playerHP}>
-                        <CharacterPreview
-                            skinColor={character.skinColor}
-                            eyeColor={character.eyeColor}
-                            hairColor={character.hairColor}
-                            hairSvg={hairItem?.svgData}
-                            outfitSvg={outfitItem?.svgData}
-                            weaponSvg={weaponItem?.svgData}
-                            accesorysvg={accessoryItem?.svgData}
-                            animation={playerAnimation}
-                            className="w-64 h-64"
-                        />
-                    </CharacterBattleCard>
+            </div>
+            {/* Main Battle Area */}
+            <div className="flex-1 relative overflow-hidden">
+                {/* Background Scene - you can replace this with your SVG map */}
 
-                    {/* Quiz Card */}
-                    {currentQuiz && (
-                        <QuizCard
-                            currentQuizIndex={currentQuizIndex}
-                            quizzesLength={quizzes.length}
-                            question={currentQuiz.question}
-                            explanation={currentQuiz.explanation}
-                        >
-                            <QuizRenderer quiz={currentQuiz} onAnswer={handleAnswer} onMatchingSubmit={handleMatchingSubmit} />
-                        </QuizCard>
-                    )}
 
-                    {/* Enemy Card */}
-                    <CharacterBattleCard name={enemy.name} hp={enemyHP}>
-                        <div className="transform scale-x-[-1]">
+                {/* Characters Container */}
+                <div className="relative z-10 h-full max-w-7xl mx-auto px-8 pt-28 pb-8">
+                    <div className="grid grid-cols-2 gap-32 h-full items-end justify-items-center">
+                        {/* Player Character */}
+                        <CharacterBattleCard name={character.name} hp={playerHP}>
+                            <CharacterPreview
+                                skinColor={character.skinColor}
+                                eyeColor={character.eyeColor}
+                                hairColor={character.hairColor}
+                                hairSvg={hairItem?.svgData}
+                                outfitSvg={outfitItem?.svgData}
+                                weaponSvg={weaponItem?.svgData}
+                                accesorysvg={accessoryItem?.svgData}
+                                animation={playerAnimation}
+                                className="w-36 h-36 md:w-56 md:h-56"
+                            />
+                        </CharacterBattleCard>
+
+                        {/* Enemy Character */}
+                        <CharacterBattleCard name={enemy.name} hp={enemyHP} isEnemy>
+
                             <CharacterPreview
                                 skinColor={enemy.skinColor}
                                 eyeColor={enemy.eyeColor}
@@ -158,10 +159,33 @@ export default function BattlePage() {
                                 outfitSvg={enemyOutfitItem?.svgData}
                                 weaponSvg={enemyWeaponItem?.svgData}
                                 animation={enemyAnimation}
-                                className="w-64 h-64"
+                                className="w-36 h-36 md:w-56 md:h-56 scale-x-[1]"
                             />
-                        </div>
-                    </CharacterBattleCard>
+
+                        </CharacterBattleCard>
+                    </div>
+                </div>
+            </div>
+            <div className="relative z-10 bg-transparent">
+
+                <SvgMapBack className="absolute inset-0 w-full h-full" />
+                <BattleHeader levelNumber={levelNumber} message={message} worldId={worldId} />
+
+                {/* Question Card at Bottom */}
+                <div className="relative z-20  md:mt-12 mt-6">
+                    {currentQuiz && (
+                        <QuizCard
+                            currentQuizIndex={currentQuizIndex}
+                            quizzesLength={quizzes.length}
+                            question={currentQuiz.question}
+                            explanation={currentQuiz.explanation}
+                        >
+                            <div className="h-[230px]">
+
+                                <QuizRenderer quiz={currentQuiz} onAnswer={handleAnswer} onMatchingSubmit={handleMatchingSubmit} />
+                            </div>
+                        </QuizCard>
+                    )}
                 </div>
 
                 {/* Progress Footer */}
@@ -175,3 +199,4 @@ export default function BattlePage() {
         </div>
     )
 }
+

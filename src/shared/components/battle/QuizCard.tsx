@@ -1,4 +1,6 @@
+import QuizzMap from "@/shared/lib/svgAssets/Quizmap"
 import type React from "react"
+import { BattleHeader } from "./BattleHeader"
 interface QuizCardProps {
     currentQuizIndex: number
     quizzesLength: number
@@ -7,30 +9,28 @@ interface QuizCardProps {
     explanation?: string
 }
 
-export const QuizCard = ({ currentQuizIndex, quizzesLength, question, children, explanation }: QuizCardProps) => {
+export const QuizCard = ({ currentQuizIndex, quizzesLength, question, children, explanation, }: QuizCardProps) => {
     return (
-        <div className="flex flex-col items-center justify-center p-6">
-            <div className="bg-[#3a2718] rounded-lg border-2 border-[#5a3a23] p-6 w-full max-w-2xl">
+        <div className="flex  flex-col items-center justify-center relative " >
+
+            <QuizzMap className="w-full max-w-2xl absolute " />
+            <div className="relative z-10  flex flex-col items-center justify-center ">
                 {/* Quiz Header */}
-                <div className="mb-4 text-center">
-                    <span className="text-amber-600 text-sm font-bold">
-                        QUESTION {currentQuizIndex + 1} OF {quizzesLength}
-                    </span>
-                </div>
+                <span className="text-white  text-outline text-xl   font-bold">
+                    QUESTION {currentQuizIndex + 1} OF {quizzesLength}
+                </span>
 
                 {/* Question */}
-                <div className="bg-[#2d1f15] rounded-lg p-4 mb-6 border-2 border-[#5a3a23]">
-                    <p className="text-amber-200 text-lg font-bold text-center">{question}</p>
-                </div>
+                <p className="text-white text-outline text-lg font-bold text-center">{question}</p>
 
                 {/* Quiz Content (rendered by parent) */}
+
                 {children}
+
 
                 {/* Explanation */}
                 {explanation && (
-                    <div className="mt-4 p-3 bg-amber-900/30 rounded border border-amber-700">
-                        <p className="text-amber-300 text-sm">💡 {explanation}</p>
-                    </div>
+                    <p className="text-orange-800 text-outline text-lg ">💡 {explanation}</p>
                 )}
             </div>
         </div>

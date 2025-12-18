@@ -6,33 +6,41 @@ interface BattleProgressProps {
 }
 
 export const BattleProgress = ({ quizzes, currentQuizIndex, failuresCount, maxFailures }: BattleProgressProps) => {
-    return (
-        <div className="relative min-w-full h-[250px] px-8 py-10 bg-gradient-to-br flex items-center justify-center to-amber-950 shadow-2xl max-w-4xl mx-auto overflow-hidden">
-            <div className="relative z-10 flex flex-col items-center gap-4">
-                <div className="flex items-center gap-3">
-                    <span className="text-yellow-400 text-lg font-extrabold drop-shadow-md tracking-wide">QUEST PROGRESS:</span>
+    if (!quizzes || quizzes.length === 0) {
+        return null
+    }
 
+    return (
+        <div className="w-full relative z-50 p-6">
+            <div className=" mx-auto flex items-center gap-4">
+                {/* Quest Progress */}
+                <div className="flex items-center  gap-4">
+                    <span className="text-yellow-600 text-sm font-bold uppercase tracking-wider">Quest Progress:</span>
                     <div className="flex items-center gap-2">
                         {quizzes.map((_, i: number) => (
                             <div
                                 key={i}
                                 className={`
-                  w-6 h-6 rounded-md border-2 transition-all shadow-md
+                  w-8 h-8 rounded-md border-3 transition-all shadow-lg flex items-center justify-center
                   ${i < currentQuizIndex
-                                        ? "bg-green-500 border-green-400 shadow-green-700"
+                                        ? "bg-green-500 border-green-400 shadow-green-700/50"
                                         : i === currentQuizIndex
-                                            ? "bg-yellow-500 border-yellow-400 animate-pulse"
-                                            : "bg-[#3a2718] border-[#5a3a23]"
+                                            ? "bg-yellow-400 border-yellow-300 animate-pulse shadow-yellow-600/50"
+                                            : "bg-gray-700 border-gray-600 shadow-gray-900/50"
                                     }
                 `}
-                            />
+                            >
+                                {i < currentQuizIndex && <span className="text-white text-lg font-bold">✓</span>}
+                            </div>
                         ))}
                     </div>
                 </div>
 
-                <div className="text-center">
-                    <span className="text-red-400 text-md font-bold drop-shadow-sm">
-                        💔 FAILURES: {failuresCount}/{maxFailures + 1}
+                {/* Failures Count */}
+                <div className="flex items-center gap-2">
+                    <span className="text-red-400 text-sm font-bold uppercase tracking-wider">💔 Failures:</span>
+                    <span className="text-red-300 text-lg font-bold">
+                        {failuresCount} / {maxFailures + 1}
                     </span>
                 </div>
             </div>

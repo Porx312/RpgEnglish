@@ -15,11 +15,9 @@ interface MenuItem {
 }
 
 // Props del componente Menu (un array de MenuItem)
-interface MenuProps {
-  options: MenuItem[];
-}
 
-export const Menu: React.FC<MenuProps> = () => {
+
+export const Menu = () => {
   const [isInventoryOpen, setIsInventoryOpen] = useState(false)
   const [isShopOpen, setIsShopOpen] = useState(false)
   let options = [

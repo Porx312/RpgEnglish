@@ -47,12 +47,6 @@ export default function RootLayout({
       <Header stast={stast} />
       {children}
       <Menu
-        options={[
-          { url: '/blattle', src: '/icons-menu/battle.png', name: 'Battle' },
-          { url: '/adventure', src: '/icons-menu/map.png', name: 'Adventure' },
-          { url: '/inventory', src: '/icons-menu/inventory.png', name: 'Inventory' },
-          { url: '/store', src: '/icons-menu/store.png', name: 'Store' },
-        ]}
       />
     </div>
   );

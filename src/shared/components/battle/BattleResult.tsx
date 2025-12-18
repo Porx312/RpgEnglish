@@ -63,9 +63,8 @@ export function BattleResult({
               ACCURACY:
             </span>
             <span
-              className={`font-bold text-3xl ${
-                accuracy >= 80 ? "text-green-400" : accuracy >= 60 ? "text-amber-400" : "text-red-400"
-              }`}
+              className={`font-bold text-3xl ${accuracy >= 80 ? "text-green-400" : accuracy >= 60 ? "text-amber-400" : "text-red-400"
+                }`}
               style={{ fontFamily: "monospace" }}
             >
               {Math.round(accuracy)}%

@@ -5,7 +5,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-    font-family: var("RPGSystem");
+  font-family: var("RPGSystem");
 
 }
 
@@ -19,8 +19,9 @@
 body {
   color: var(--foreground);
   background: var(--background);
-   font-family: var(--EightBitDragon);
+  font-family: var(--EightBitDragon);
 }
+
 /* app/globals.css (añade al final) */
 .custom-scrollbar {
   scrollbar-width: thin;
@@ -47,22 +48,47 @@ body {
 }
 
 
-.basic-color{ 
-  background: rgb(63, 49, 51,0.8);
-  border: 30px 30px  #201d1b;
+.basic-color {
+  background: rgb(63, 49, 51, 0.8);
+  border: 30px 30px #201d1b;
 }
+
 @keyframes pulse-slow {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.6; }
+
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
 }
-.animate-pulse-slow { animation: pulse-slow 4s ease-in-out infinite; }
+
+.animate-pulse-slow {
+  animation: pulse-slow 4s ease-in-out infinite;
+}
 
 @keyframes draw-path {
-  from { stroke-dasharray: 0 300; }
-  to { stroke-dasharray: 300 0; }
+  from {
+    stroke-dasharray: 0 300;
+  }
+
+  to {
+    stroke-dasharray: 300 0;
+  }
 }
-.animate-draw-path { 
+
+.animate-draw-path {
   stroke-dasharray: 300;
   stroke-dashoffset: 300;
   animation: draw-path 2s ease-out forwards;
+}
+
+.text-outline {
+  text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
 }

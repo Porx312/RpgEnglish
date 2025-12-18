@@ -8,6 +8,17 @@ export const getAllWorlds = query({
   },
 })
 
+export const getWorld = query({
+  args: { worldId: v.string() },
+  handler: async (ctx, args) => {
+    const world = await ctx.db
+      .query("worlds")
+      .filter((q) => q.eq(q.field("worldId"), args.worldId))
+      .first()
+    return world
+  },
+})
+
 export const getWorldById = query({
   args: { worldId: v.string() },
   handler: async (ctx, { worldId }) => {
@@ -20,11 +31,12 @@ export const getWorldById = query({
 
 export const getUserProgress = query({
   args: { userId: v.string(), worldId: v.string() },
-  handler: async (ctx, { userId, worldId }) => {
-    return await ctx.db
+  handler: async (ctx, args) => {
+    const progress = await ctx.db
       .query("battleProgress")
-      .withIndex("by_user_and_world", (q) => q.eq("userId", userId).eq("worldId", worldId))
+      .filter((q) => q.and(q.eq(q.field("userId"), args.userId), q.eq(q.field("worldId"), args.worldId)))
       .collect()
+    return progress
   },
 })
 
@@ -124,5 +136,49 @@ export const deleteWorld = mutation({
     }
 
     await ctx.db.delete(args.worldId)
+  },
+})
+
+export const updateProgress = mutation({
+  args: {
+    userId: v.string(),
+    worldId: v.string(),
+    levelNumber: v.number(),
+    completed: v.boolean(),
+    score: v.optional(v.number()),
+    accuracy: v.optional(v.number()),
+  },
+  handler: async (ctx, args) => {
+    const existing = await ctx.db
+      .query("battleProgress")
+      .filter((q) =>
+        q.and(
+          q.eq(q.field("userId"), args.userId),
+          q.eq(q.field("worldId"), args.worldId),
+          q.eq(q.field("levelNumber"), args.levelNumber),
+        ),
+      )
+      .first()
+
+    if (existing) {
+      await ctx.db.patch(existing._id, {
+        completed: args.completed,
+        score: args.score ?? existing.score,
+        accuracy: args.accuracy ?? existing.accuracy,
+        attempts: existing.attempts + 1,
+        completedAt: args.completed ? Date.now() : existing.completedAt,
+      })
+    } else {
+      await ctx.db.insert("battleProgress", {
+        userId: args.userId,
+        worldId: args.worldId,
+        levelNumber: args.levelNumber,
+        completed: args.completed,
+        score: args.score ?? 0,
+        accuracy: args.accuracy ?? 0,
+        attempts: 1,
+        completedAt: args.completed ? Date.now() : undefined,
+      })
+    }
   },
 })

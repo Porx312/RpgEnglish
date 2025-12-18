@@ -1,38 +1,48 @@
-import type React from "react"
+import type React from "react";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { HealthBar } from "../adventure/HpBar";
+
 interface CharacterBattleCardProps {
-    name: string
-    hp: number
-    children: React.ReactNode
+    name: string;
+    hp: number; // asumimos 0-100
+    children: React.ReactNode;
+    isEnemy?: boolean;
 }
 
-export const CharacterBattleCard = ({ name, hp, children }: CharacterBattleCardProps) => {
-    const hpPercentage = Math.max(0, Math.min(100, hp))
+export const CharacterBattleCard = ({
+    name,
+    hp,
+    children,
+    isEnemy,
+}: CharacterBattleCardProps) => {
+    const barRef = useRef<HTMLDivElement>(null);
+
+    // Convertimos hp a ratio 0-1
+    const hpRatio = Math.max(0, Math.min(1, hp / 100));
+
+    useEffect(() => {
+        if (!barRef.current) return;
+
+        gsap.to(barRef.current, {
+            scaleX: hpRatio,
+            duration: 0.6,
+            ease: "power2.out",
+            transformOrigin: "left center",
+        });
+    }, [hpRatio]);
 
     return (
-        <div className="flex flex-col items-center justify-center p-6">
-            <div className="bg-[#3a2718] rounded-lg border-2 border-[#5a3a23] p-4 w-full max-w-sm">
-                <h3 className="text-amber-200 font-bold text-xl text-center mb-3">{name}</h3>
+        <div className="flex flex-col items-center justify-end relative">
+            {/* HP Bar */}
+            <div ref={barRef} className="w-48 h-3 overflow-hidden">
+                <HealthBar hp={100} /> {/* siempre renderizamos la barra llena, GSAP hace el scale */}
+            </div>
 
-                {/* HP Bar */}
-                <div className="mb-4">
-                    <div className="flex justify-between text-xs text-amber-400 mb-1">
-                        <span>HP</span>
-                        <span>{hp}/100</span>
-                    </div>
-                    <div className="w-full bg-[#2d1f15] rounded-full h-4 border-2 border-[#5a3a23]">
-                        <div
-                            className={`h-full rounded-full transition-all duration-300 ${hp > 50 ? "bg-green-500" : hp > 25 ? "bg-yellow-500" : "bg-red-500"
-                                }`}
-                            style={{ width: `${hpPercentage}%` }}
-                        />
-                    </div>
-                </div>
-
-                {/* Character Preview */}
-                <div className="flex justify-center items-center bg-[#2d1f15] rounded-lg p-4 border border-[#5a3a23]">
-                    {children}
-                </div>
+            {/* Character */}
+            <div className={`flex justify-center items-end ${isEnemy ? "scale-x-[-1]" : ""}`}>
+                {children}
             </div>
         </div>
-    )
-}
+    );
+};
